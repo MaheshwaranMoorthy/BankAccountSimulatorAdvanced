@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.InputMismatchException;
 
 public class Main
 {
@@ -33,14 +34,14 @@ public class Main
         System.out.println("Account Number: ");
         int accountNumber = 0;
         while (accountNumber <= 0) {
-            if (sc.hasNextInt()) {
+            try {
                 accountNumber = sc.nextInt();
 
                 if (accountNumber <= 0) {
                     System.out.println("Account number must be greater than zero.");
                     System.out.println("Account Number: ");
                 }
-            } else {
+            } catch(InputMismatchException e) {
                 sc.next(); // Consume invalid input
                 System.out.println("Please enter a valid integer account number: ");
             }
@@ -49,7 +50,7 @@ public class Main
         double balance = 0.0;
         while(balance<1000.0)
         {
-            if(sc.hasNextDouble())
+            try
             {
                 balance = sc.nextDouble();
                 if(balance<1000.0)
@@ -58,7 +59,7 @@ public class Main
                     System.out.println("Account Balance: ");
                 }
             }
-            else
+            catch(InputMismatchException e)
             {
                 sc.next();
                 System.out.println("Please Enter an Integer Balance: ");
@@ -78,11 +79,11 @@ public class Main
             System.out.println("6.Exit:");
             System.out.println();
             System.out.println("Enter your choice: ");
-            if(sc.hasNextInt())
+            try
             {
                 choice = sc.nextInt();
             }
-            else {
+            catch(InputMismatchException e) {
                 sc.next();
                 System.out.println("Please enter a number");
                 continue;
@@ -96,22 +97,19 @@ public class Main
                 case 2:
                     System.out.println("Enter amount: ");
                     double deposit = 0.0;
-                    while(deposit<=0.0)
-                    {
-                        if(sc.hasNextDouble())
-                        {
+                    while (deposit <= 0.0) {
+                        try {
                             deposit = sc.nextDouble();
-                            if(deposit<=0.0)
-                            {
-                                System.out.println("Please enter a valid Deposit number: ");
-                                System.out.println("Enter amount: ");
+
+                            if (deposit <= 0.0) {
+                                System.out.println("Please enter a valid deposit amount:");
+                                System.out.println("Enter amount:");
                             }
-                        }
-                        else
-                        {
-                            sc.next();
-                            System.out.println("Please enter Deposit as a number: ");
-                            System.out.println("Enter amount: ");
+
+                        } catch (InputMismatchException e) {
+                            sc.next(); // Remove invalid input
+                            System.out.println("Please enter the deposit as a number:");
+                            System.out.println("Enter amount:");
                         }
                     }
                     account1.deposit(deposit);
@@ -122,7 +120,7 @@ public class Main
                     double withdraw = 0.0;
                     while(withdraw <= 0.0 || account1.getBalance()<withdraw)
                     {
-                        if(sc.hasNextDouble())
+                        try
                         {
                             withdraw = sc.nextDouble();
                             if(withdraw<=0.0)
@@ -136,7 +134,7 @@ public class Main
                                 System.out.println("enter amount: ");
                             }
                         }
-                        else
+                        catch(InputMismatchException e)
                         {
                             sc.next();
                             System.out.println("Please enter a Integer value as an withdraw amount: ");
