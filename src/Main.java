@@ -76,7 +76,8 @@ public class Main
             System.out.println("3.Withdraw:");
             System.out.println("4.Balance:");
             System.out.println("5.Transactions:");
-            System.out.println("6.Exit:");
+            System.out.println("6.Receipt: ");
+            System.out.println("7.Exit:");
             System.out.println();
             System.out.println("Enter your choice: ");
             try
@@ -153,6 +154,10 @@ public class Main
                     break;
 
                 case 6:
+                    account1.printLatestReceiptTransactions();
+                    break;
+
+                case 7:
                     System.out.println("Thanks for using our Service");
                     break;
 
@@ -160,6 +165,6 @@ public class Main
                     System.out.println("Invalid Choice");
             }
         }
-        while(choice!=6);
+        while(choice!=7);
     }
 }

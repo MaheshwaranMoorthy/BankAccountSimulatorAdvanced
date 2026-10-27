@@ -1,3 +1,8 @@
+import java.io.BufferedReader;
+import java.io.FileWriter;
+import java.io.FileReader;
+import java.io.IOException;
+
 public class BankAccount
 {
     private String accountHolder;
@@ -34,6 +39,7 @@ public class BankAccount
             balance += amount;
             double transactionBalance = balance;
             transactions(depositValue,transactionBalance);
+            saveTransaction("Deposit",depositValue,transactionBalance);
             System.out.println("Deposit successfully");
             System.out.println("Current Balance: "+balance);
         }
@@ -51,6 +57,7 @@ public class BankAccount
             balance -= amount;
             double transactionBalance = balance;
             transactions(withdrawValue,transactionBalance);
+            saveTransaction("Withdraw",-withdrawValue,transactionBalance);
             System.out.println("Withdraw Successfully");
             System.out.println("Current Balance: "+balance);
         }
@@ -84,6 +91,62 @@ public class BankAccount
         balanceArr[transactionCount] = balanceValue;
         transactionCount++;
     }
+
+    void saveTransaction(String type,double amount,double currentBalance)
+    {
+        try
+        {
+            FileWriter writer = new FileWriter("transactions.txt",true);
+
+            writer.write(type +": "+amount+"\n");
+            writer.write("Balance: "+currentBalance+"\n");
+
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("Unable to save transaction");;
+        }
+    }
+
+    void printLatestReceiptTransactions()
+    {
+        String lastTransaction = null;
+        String lastBalance = null;
+
+        try (BufferedReader reader =
+                     new BufferedReader(new FileReader("transactions.txt")))
+        {
+            String line;
+
+            while ((line = reader.readLine()) != null)
+            {
+                if (line.startsWith("Deposit:") || line.startsWith("Withdraw:"))
+                {
+                    lastTransaction = line;
+                    lastBalance = reader.readLine();
+                }
+            }
+
+            if (lastTransaction != null)
+            {
+                System.out.println("===== TRANSACTION RECEIPT =====");
+                System.out.println("Account Holder: " + accountHolder);
+                System.out.println("Account Number: " + accountNumber);
+                System.out.println(lastTransaction);
+                System.out.println(lastBalance);
+                System.out.println("===============================");
+            }
+            else
+            {
+                System.out.println("No saved transactions found.");
+            }
+        }
+        catch (IOException e)
+        {
+            System.out.println("Unable to read transaction history.");
+        }
+    }
+
+
     void transactionDisplay()
     {
         System.out.println("Transaction History");
